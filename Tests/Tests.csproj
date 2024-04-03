@@ -24,4 +24,8 @@
       <ProjectReference Include="..\SmartId\SmartId.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="UnitTests\" />
+    </ItemGroup>
+
 </Project>
