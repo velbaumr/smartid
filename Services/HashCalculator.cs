@@ -4,7 +4,7 @@ namespace Services;
 
 public class HashCalculator(IConfiguration configuration)
 {
-    public static byte[] CalculateHash(byte[] data)
+    public byte[] CalculateHash(byte[] data)
     {
         throw new NotImplementedException();
     }
