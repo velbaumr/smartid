@@ -1,11 +1,22 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Security.Cryptography;
+using Microsoft.Extensions.Configuration;
 
 namespace Services;
 
-public class HashCalculator(IConfiguration configuration)
+public static class HashCalculator
 {
-    public byte[] CalculateHash(byte[] data)
+    public static byte[] CalculateHash(byte[]? data = null)
     {
-        throw new NotImplementedException();
+        var bytes = GetRandomByteArray();
+        var hash = SHA256.HashData(data ?? bytes);
+
+        return hash;
+    }
+    
+    private static byte[] GetRandomByteArray()
+    {
+        var result = RandomNumberGenerator.GetBytes(64);
+        
+        return result;
     }
 }

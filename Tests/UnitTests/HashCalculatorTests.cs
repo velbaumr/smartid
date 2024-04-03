@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Services;
+﻿using Services;
 
 namespace Tests.UnitTests;
 
@@ -8,10 +7,9 @@ public class HashCalculatorTests : TestBase
     [Fact]
     public void CalculatesHash()
     {
-        var calculator = new HashCalculator(_configuration);
-        var result = calculator.CalculateHash(Encoding.UTF8.GetBytes("hello world!"));
+        var result = HashCalculator.CalculateHash("hello world!"u8.ToArray());
 
-        Assert.Equal("7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
-            Encoding.UTF8.GetString(result));
+        Assert.Equal("7509e5bda0c762d2bac7f90d758b5b2263fa01ccbc542ab5e3df163be08e6ca9",
+            string.Concat(result.Select(b => b.ToString("x2"))));
     }
 }
