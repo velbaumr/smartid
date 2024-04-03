@@ -1,14 +1,12 @@
 ﻿using System.Security.Cryptography;
-using Microsoft.Extensions.Configuration;
 
 namespace Services;
 
-public static class HashCalculator
+public static class HashCreator
 {
-    public static byte[] CalculateHash(byte[]? data = null)
+    public static IEnumerable<byte> CreateHash(byte[]? data = null)
     {
-        var bytes = GetRandomByteArray();
-        var hash = SHA256.HashData(data ?? bytes);
+        var hash = SHA256.HashData(data ?? GetRandomByteArray());
 
         return hash;
     }
