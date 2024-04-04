@@ -11,4 +11,10 @@ public class HttpClientHandler : IHttpClientHandler
         _client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
         return await _client.GetAsync(url);
     }
+
+    public async Task<HttpResponseMessage> PostAsync(string url, HttpContent? content)
+    {
+        _client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+        return await _client.PostAsync(url, content);
+    }
 }

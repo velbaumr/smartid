@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Services.Interfaces;
 using SmartId;
 
 var configuration = new ConfigurationBuilder()
@@ -18,6 +19,7 @@ var services = new ServiceCollection()
     })
     .AddSingleton<Application>()
     .AddSingleton<IConfiguration>(configuration)
+    .AddTransient<IHttpClientHandler, Services.HttpClientHandler>()
     .BuildServiceProvider();
 
 var app = services.GetRequiredService<Application>();
