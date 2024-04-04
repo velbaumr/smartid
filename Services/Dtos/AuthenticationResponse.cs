@@ -2,5 +2,5 @@
 
 public class AuthenticationResponse
 {
-    public string SessionId { get; set; }
+    public string? SessionId { get; set; }
 }
