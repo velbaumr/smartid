@@ -3,11 +3,16 @@ using Services.Interfaces;
 
 namespace SmartId;
 
-public class Application(ILogger<Application> logger, IAuthenticator authenticator)
+public class Application(ILogger<Application> logger, IAuthenticator authenticator, IRequestBuilder requestBuilder)
 {
     public async Task Run()
     {
-        await Task.Delay(5000);
         logger.LogInformation("Smart ID is running");
+
+        var documentNumber = "PNOEE-30403039928-MOCK-Q";
+        var request = requestBuilder.Build();
+        var result = await authenticator.Authenticate(request, documentNumber);
+        
+        logger.LogInformation(result.Value ?? result.ErrorMessage);
     }
 }

@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Services.Dtos;
+using Services.Interfaces;
 
 namespace Services;
 
-public class RequestBuilder(IConfiguration configuration)
+public class RequestBuilder(IConfiguration configuration): IRequestBuilder
 {
-    public string? VerificationCode { get; private set; }
+    public string? VerificationCode { get; set; }
 
     public AuthenticationRequest Build()
     {

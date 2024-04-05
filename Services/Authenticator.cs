@@ -6,8 +6,7 @@ using Services.Interfaces;
 namespace Services;
 
 public class Authenticator(
-    ISmartIdClient smartIdClient,
-    ILogger<Authenticator> logger): IAuthenticator
+    ISmartIdClient smartIdClient): IAuthenticator
 {
     private readonly JsonSerializerOptions _options = new()
     {
@@ -30,6 +29,13 @@ public class Authenticator(
 
             var result = await PollAuthenticationResult(sessionId!);
 
+            if (result == null)
+            {
+                return new Result<string>
+                {
+                    ErrorMessage = "application authentication timeout"
+                };
+            }
             return new Result<string>
             {
                 Value = result
@@ -37,7 +43,6 @@ public class Authenticator(
         }
         catch (Exception e)
         {
-            logger.LogError(e.Message);
             return new Result<string>
             {
                 ErrorMessage = e.Message

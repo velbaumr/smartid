@@ -22,6 +22,7 @@ var services = new ServiceCollection()
     .AddSingleton<IConfiguration>(configuration)
     .AddSingleton<IAuthenticator, Authenticator>()
     .AddSingleton<ISmartIdClient, SmartIdClient>()
+    .AddSingleton<IRequestBuilder, RequestBuilder>()
     .BuildServiceProvider();
 
 var app = services.GetRequiredService<Application>();
