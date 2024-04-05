@@ -1,18 +1,31 @@
-﻿using Microsoft.Extensions.Logging;
-using Services.Interfaces;
+﻿using Services.Interfaces;
 
 namespace SmartId;
 
-public class Application(ILogger<Application> logger, IAuthenticator authenticator, IRequestBuilder requestBuilder)
+public class Application(IAuthenticator authenticator, IRequestBuilder requestBuilder)
 {
     public async Task Run()
     {
-        logger.LogInformation("Smart ID is running");
+        var finished = false;
+        do
+        {
+            var request = requestBuilder.Build();
+            var verificationCode = requestBuilder.VerificationCode;
+            Console.WriteLine($"Verification code: {verificationCode}");
+            Console.WriteLine("Enter Id Code or Test Document number");
+            var input = Console.ReadLine() ?? string.Empty;
+            var result = await authenticator.Authenticate(request, input);
 
-        var documentNumber = "PNOEE-30403039928-MOCK-Q";
-        var request = requestBuilder.Build();
-        var result = await authenticator.Authenticate(request, documentNumber);
+            Console.WriteLine(result.Value ?? result.ErrorMessage);
+            Console.WriteLine("Do you want to continue (y/any other key)?");
+            var condition = Console.ReadKey().KeyChar;
+
+            if (char.ToUpper(condition) == 'Y')
+            {
+                finished = true;
+            }
+        } while (finished);
         
-        logger.LogInformation(result.Value ?? result.ErrorMessage);
+        Environment.Exit(0);
     }
 }
