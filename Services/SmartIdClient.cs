@@ -1,4 +1,8 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
+using System.Net.Mime;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Services.Dtos;
@@ -9,15 +13,17 @@ namespace Services;
 public class SmartIdClient(IConfiguration configuration, ILogger logger): ISmartIdClient
 {
     private readonly IConfiguration _configuration = configuration.GetSection("smartId");
+
+    private readonly JsonSerializerOptions _jsonOptions = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
     
     public async Task<HttpResponseMessage> SendAuthenticationRequest(AuthenticationRequest request, string documentNumber)
     {
-        var serialized = JsonSerializer.Serialize(request);
-        var content = new StringContent(serialized);
-        var baseUrl = _configuration["baseUrl"];
+        var serialized = JsonSerializer.Serialize(request, _jsonOptions);
+        var content =  new StringContent(serialized, System.Text.Encoding.UTF8, "application/json");
+        var baseUrl = _configuration["baseUrl"] ?? throw new InvalidOperationException("Can't read base url value from settings");
         var client = new HttpClient();
+        var url = $"{baseUrl}authentication/document/{documentNumber}";
         
-        var url = $"{baseUrl}/authentication/document/{documentNumber}";
         try
         {
             var response = await client.PostAsync(url, content);
@@ -32,9 +38,9 @@ public class SmartIdClient(IConfiguration configuration, ILogger logger): ISmart
         }
     }
 
-    public async Task<HttpResponseMessage> SendSessionRequest(string sessionId)
+    public async Task<HttpResponseMessage> SendSessionRequest(string? sessionId)
     {
-        var baseUrl = _configuration["baseUrl"];
+        var baseUrl = _configuration["baseUrl"] ?? throw new InvalidOperationException("Can't read base url value from settings");
         var url = $"{baseUrl}session/{sessionId}";
         var client = new HttpClient();
 

@@ -7,36 +7,50 @@ namespace Services;
 
 public class Authenticator(ISmartIdClient handler, ILogger logger)
 {
-    public async Task<string?> Authenticate(AuthenticationRequest request, string documentNumber)
+    public async Task<Result<string>> Authenticate(AuthenticationRequest request, string documentNumber)
     {
+        try
+        {
+            var response = await handler.SendAuthenticationRequest(request, documentNumber);
 
-        var response = await handler.SendAuthenticationRequest(request, documentNumber);
-
-        var content = await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync();
         
-        var sessionId = JsonSerializer.Deserialize<AuthenticationResponse>(content)?.SessionId;
+            var sessionId = JsonSerializer.Deserialize<AuthenticationResponse>(content)?.SessionId;
 
-        return await PollAuthenticationResult(sessionId);
+            var result = await PollAuthenticationResult(sessionId!);
+
+            return new Result<string> { Value = result };
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e.Message);
+            return new Result<string> { ErrorMessage = e.Message };
+        }
     }
 
-    private async Task<string?> PollAuthenticationResult(string? sessionId)
+    private async Task<string?> PollAuthenticationResult(string sessionId)
     {
-        while (true)
+        ArgumentNullException.ThrowIfNull(sessionId);
+        
+        var authResult = new SessionResponse();
+
+        while (authResult?.State != "Completed")
         {
             var response = await handler.SendSessionRequest(sessionId);
-            
+
             var content = await response.Content.ReadAsStringAsync();
 
-            var authResult = JsonSerializer.Deserialize<SessionResponse>(content);
+            authResult = JsonSerializer.Deserialize<SessionResponse>(content);
 
             if (authResult?.State == "Completed")
             {
                 return authResult.Result?.EndResult;
             }
-            
+
             await Task.Delay(5000);
         }
 
+        throw new InvalidOperationException();
     }
 
 }

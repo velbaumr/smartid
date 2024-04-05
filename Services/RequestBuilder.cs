@@ -16,7 +16,7 @@ public class RequestBuilder(IConfiguration configuration)
         {
             HashType = "SHA256",
             Hash = Convert.ToBase64String(hash),
-            RelyingPartyUuid = settings["uuid"],
+            RelyingPartyUUID = settings["uuid"],
             RelyingPartyName = settings["name"],
             CertificateLevel = "QUALIFIED",
             AllowedInteractionsOrder = [new AllowedInteraction { DisplayText60 = settings["displayText"], Type = "displayTextAndPIN"}]

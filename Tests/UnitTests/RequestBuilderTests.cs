@@ -14,7 +14,7 @@ public class RequestBuilderTests: TestBase
         var result = _builder.Build();
 
         Assert.NotNull(result.Hash);
-        Assert.Equal("00000000-0000-0000-0000-000000000000", result.RelyingPartyUuid);
+        Assert.Equal("00000000-0000-0000-0000-000000000000", result.RelyingPartyUUID);
         Assert.Equal("DEMO", result.RelyingPartyName);
     }
 }

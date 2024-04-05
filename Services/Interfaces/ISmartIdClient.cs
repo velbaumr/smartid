@@ -6,5 +6,5 @@ public interface ISmartIdClient
 {
     Task<HttpResponseMessage> SendAuthenticationRequest(AuthenticationRequest request, string documentNumber);
 
-    Task<HttpResponseMessage> SendSessionRequest(string sessionId);
+    Task<HttpResponseMessage> SendSessionRequest(string? sessionId);
 }

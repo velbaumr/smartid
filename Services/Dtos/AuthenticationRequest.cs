@@ -2,7 +2,7 @@
 
 public class AuthenticationRequest
 {
-    public string? RelyingPartyUuid { get; set; }
+    public string? RelyingPartyUUID { get; set; }
     
     public string? RelyingPartyName { get; set; }
     
