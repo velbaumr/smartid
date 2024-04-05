@@ -10,11 +10,11 @@ public static class HashCreator
 
         return hash;
     }
-    
+
     private static byte[] GetRandomByteArray()
     {
         var result = RandomNumberGenerator.GetBytes(64);
-        
+
         return result;
     }
 }

@@ -7,7 +7,7 @@ using SmartId;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Path.Combine(AppContext.BaseDirectory))
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("appsettings.json", true, true)
     .AddEnvironmentVariables()
     .AddCommandLine(args)
     .Build();
@@ -25,8 +25,4 @@ var services = new ServiceCollection()
 
 var app = services.GetRequiredService<Application>();
 
-app.Run();
-
-
-
-
+await app.Run();

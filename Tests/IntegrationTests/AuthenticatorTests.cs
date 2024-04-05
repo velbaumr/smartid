@@ -4,9 +4,10 @@ using Services;
 
 namespace Tests.IntegrationTests;
 
-public class AuthenticatorTests: TestBase
+public class AuthenticatorTests : TestBase
 {
     private readonly Authenticator _authenticator;
+
     public AuthenticatorTests()
     {
         var logger = new Mock<ILogger>();
@@ -26,7 +27,7 @@ public class AuthenticatorTests: TestBase
 
         Assert.Equal(responseState, result.Value);
     }
-    
+
     [Fact]
     public async Task CompletesAuthenticationWithRealId()
     {

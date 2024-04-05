@@ -5,13 +5,13 @@ namespace Services;
 
 public class RequestBuilder(IConfiguration configuration)
 {
-    public string? VerificationCode { get; private set; } 
-    
+    public string? VerificationCode { get; private set; }
+
     public AuthenticationRequest Build()
     {
         var hash = HashCreator.CreateHash().ToArray();
         var settings = configuration.GetSection("smartId");
-        
+
         var request = new AuthenticationRequest
         {
             HashType = "SHA256",
@@ -19,7 +19,8 @@ public class RequestBuilder(IConfiguration configuration)
             RelyingPartyUUID = settings["uuid"],
             RelyingPartyName = settings["name"],
             CertificateLevel = "QUALIFIED",
-            AllowedInteractionsOrder = [new AllowedInteraction { DisplayText60 = settings["displayText"], Type = "displayTextAndPIN"}]
+            AllowedInteractionsOrder =
+                [new AllowedInteraction { DisplayText60 = settings["displayText"], Type = "verificationCodeChoice" }]
         };
 
         VerificationCode = CodeCalculator.CalculateCode(hash);

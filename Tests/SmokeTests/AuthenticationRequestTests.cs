@@ -4,11 +4,11 @@ using static RestAssured.Dsl;
 
 namespace Tests.SmokeTests;
 
-public class AuthenticationRequestTests: TestBase
+public class AuthenticationRequestTests : TestBase
 {
     private readonly string _baseUrl;
     private readonly AuthenticationRequest _request;
-    
+
     public AuthenticationRequestTests()
     {
         var settings = _configuration.GetSection("smartId");
@@ -22,8 +22,8 @@ public class AuthenticationRequestTests: TestBase
     public void ConnectsToSmartId()
     {
         var authUrl = $"{_baseUrl}authentication/document/PNOEE-30303039914-MOCK-Q";
-        
-        var  responseBodyAsString = Given()
+
+        var responseBodyAsString = Given()
             .Body(_request)
             .Header("Accept", "*/*")
             .ContentType("application/json")
@@ -31,7 +31,7 @@ public class AuthenticationRequestTests: TestBase
             .Post(authUrl)
             .Then()
             .Extract().Body();
-        
+
         Assert.NotEmpty(responseBodyAsString);
     }
- }
+}

@@ -1,10 +1,8 @@
-﻿using Newtonsoft.Json;
-using Services;
-using Services.Dtos;
+﻿using Services;
 
 namespace Tests.UnitTests;
 
-public class RequestBuilderTests: TestBase
+public class RequestBuilderTests : TestBase
 {
     private readonly RequestBuilder _builder = new(_configuration);
 
