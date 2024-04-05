@@ -13,7 +13,7 @@ public class SmartIdClientTests : TestBase
 
     public SmartIdClientTests()
     {
-        var logger = new Mock<ILogger>();
+        var logger = new Mock<ILogger<SmartIdClient>>();
         _client = new SmartIdClient(_configuration, logger.Object);
         _options = new JsonSerializerOptions
         {
@@ -28,7 +28,7 @@ public class SmartIdClientTests : TestBase
         var sessionId = await GetSessionId(result);
 
         Assert.NotNull(result);
-        Assert.Equal(36, sessionId.Length);
+        Assert.Equal(36, sessionId?.Length);
     }
 
     [Theory]

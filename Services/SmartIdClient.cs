@@ -8,7 +8,7 @@ using Services.Interfaces;
 
 namespace Services;
 
-public class SmartIdClient(IConfiguration configuration, ILogger logger) : ISmartIdClient
+public class SmartIdClient(IConfiguration configuration, ILogger<SmartIdClient> logger) : ISmartIdClient
 {
     private readonly IConfiguration _configuration = configuration.GetSection("smartId");
 

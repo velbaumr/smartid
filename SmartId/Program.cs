@@ -20,6 +20,7 @@ var services = new ServiceCollection()
     })
     .AddSingleton<Application>()
     .AddSingleton<IConfiguration>(configuration)
+    .AddTransient<IAuthenticator, Authenticator>()
     .AddTransient<ISmartIdClient, SmartIdClient>()
     .BuildServiceProvider();
 

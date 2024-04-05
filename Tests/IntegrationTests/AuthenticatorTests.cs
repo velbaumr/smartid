@@ -10,8 +10,9 @@ public class AuthenticatorTests : TestBase
 
     public AuthenticatorTests()
     {
-        var logger = new Mock<ILogger>();
-        var handler = new SmartIdClient(_configuration, logger.Object);
+        var logger = new Mock<ILogger<Authenticator>>();
+        var smartIdLogger = new Mock<ILogger<SmartIdClient>>();
+        var handler = new SmartIdClient(_configuration, smartIdLogger.Object);
         _authenticator = new Authenticator(handler, logger.Object);
     }
 

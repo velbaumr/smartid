@@ -6,8 +6,8 @@ using Services.Interfaces;
 namespace Services;
 
 public class Authenticator(
-    ISmartIdClient handler,
-    ILogger logger)
+    ISmartIdClient smartIdClient,
+    ILogger<Authenticator> logger): IAuthenticator
 {
     private readonly JsonSerializerOptions _options = new()
     {
@@ -19,7 +19,7 @@ public class Authenticator(
     {
         try
         {
-            var response = await handler.SendAuthenticationRequest(request,
+            var response = await smartIdClient.SendAuthenticationRequest(request,
                 documentNumber);
 
             var content = await response.Content.ReadAsStringAsync();
@@ -53,7 +53,7 @@ public class Authenticator(
 
         while (authResult?.State != "COMPLETE")
         {
-            var response = await handler.SendSessionRequest(sessionId);
+            var response = await smartIdClient.SendSessionRequest(sessionId);
 
             var content = await response.Content.ReadAsStringAsync();
 
