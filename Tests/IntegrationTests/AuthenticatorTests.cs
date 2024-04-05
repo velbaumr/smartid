@@ -13,4 +13,13 @@ public class AuthenticatorTests: TestBase
         var handler = new SmartIdClient(_configuration, logger.Object);
         _authenticator = new Authenticator(handler, logger.Object);
     }
+
+    [Fact]
+    public async Task CompletesAuthentication()
+    {
+        var request = new RequestBuilder(_configuration).Build();
+        var result = await _authenticator.Authenticate(request, "PNOEE-50001029996-MOCK-Q");
+
+        Assert.Equal("OK", result.Value);
+    }
 }

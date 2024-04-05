@@ -7,6 +7,7 @@ namespace Services;
 
 public class Authenticator(ISmartIdClient handler, ILogger logger)
 {
+    private readonly JsonSerializerOptions _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
     public async Task<Result<string>> Authenticate(AuthenticationRequest request, string documentNumber)
     {
         try
@@ -15,7 +16,7 @@ public class Authenticator(ISmartIdClient handler, ILogger logger)
 
             var content = await response.Content.ReadAsStringAsync();
         
-            var sessionId = JsonSerializer.Deserialize<AuthenticationResponse>(content)?.SessionId;
+            var sessionId = JsonSerializer.Deserialize<AuthenticationResponse>(content, _options)?.SessionId;
 
             var result = await PollAuthenticationResult(sessionId!);
 
@@ -34,15 +35,15 @@ public class Authenticator(ISmartIdClient handler, ILogger logger)
         
         var authResult = new SessionResponse();
 
-        while (authResult?.State != "Completed")
+        while (authResult?.State != "COMPLETE")
         {
             var response = await handler.SendSessionRequest(sessionId);
 
             var content = await response.Content.ReadAsStringAsync();
 
-            authResult = JsonSerializer.Deserialize<SessionResponse>(content);
+            authResult = JsonSerializer.Deserialize<SessionResponse>(content, _options);
 
-            if (authResult?.State == "Completed")
+            if (authResult?.State == "COMPLETE")
             {
                 return authResult.Result?.EndResult;
             }
@@ -50,7 +51,6 @@ public class Authenticator(ISmartIdClient handler, ILogger logger)
             await Task.Delay(5000);
         }
 
-        throw new InvalidOperationException();
+        return null;
     }
-
 }
