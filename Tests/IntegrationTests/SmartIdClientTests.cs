@@ -34,6 +34,8 @@ public class SmartIdClientTests: TestBase
     [Theory]
     [InlineData("PNOEE-50001029996-MOCK-Q", "OK")]
     [InlineData("PNOEE-30403039983-MOCK-Q", "TIMEOUT")]
+    [InlineData("PNOEE-30403039917-MOCK-Q", "USER_REFUSED")]
+    [InlineData("PNOEE-30403039928-MOCK-Q", "USER_REFUSED_DISPLAYTEXTANDPIN")]
     public async Task GetsAuthenticationResponse(string documentNumber, string responseState)
     {
         var sessionResult = await GetSessionResponse(documentNumber);
