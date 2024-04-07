@@ -21,7 +21,8 @@ public class RequestBuilder(IConfiguration configuration): IRequestBuilder
             RelyingPartyName = settings["name"],
             CertificateLevel = "QUALIFIED",
             AllowedInteractionsOrder =
-                [new AllowedInteraction { DisplayText60 = settings["displayText"], Type = "verificationCodeChoice" }]
+                [new AllowedInteraction { DisplayText60 = settings["displayText"], Type = "verificationCodeChoice" },
+                new AllowedInteraction { DisplayText60 = settings["displayTextSecond"], Type = "displayTextAndPIN"}]
         };
 
         VerificationCode = CodeCalculator.CalculateCode(hash);

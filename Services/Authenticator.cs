@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using Microsoft.Extensions.Logging;
 using Services.Dtos;
 using Services.Interfaces;
 
@@ -27,15 +26,8 @@ public class Authenticator(
                     _options)
                 ?.SessionId;
 
-            var result = await PollAuthenticationResult(sessionId!);
+            var result = await PollAuthenticationResult(sessionId);
 
-            if (result == null)
-            {
-                return new Result<string>
-                {
-                    ErrorMessage = "application authentication timeout"
-                };
-            }
             return new Result<string>
             {
                 Value = result
@@ -50,7 +42,7 @@ public class Authenticator(
         }
     }
 
-    private async Task<string?> PollAuthenticationResult(string sessionId)
+    private async Task<string?> PollAuthenticationResult(string? sessionId)
     {
         ArgumentNullException.ThrowIfNull(sessionId);
 
@@ -65,11 +57,11 @@ public class Authenticator(
             authResult = JsonSerializer.Deserialize<SessionResponse>(content,
                 _options);
 
-            if (authResult?.State == "COMPLETE") return authResult.Result?.EndResult;
+            if (authResult?.State == "COMPLETE") break;
 
             await Task.Delay(5000);
         }
 
-        return null;
+        return authResult.Result?.EndResult;
     }
 }

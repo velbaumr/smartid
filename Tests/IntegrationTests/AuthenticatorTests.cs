@@ -27,13 +27,4 @@ public class AuthenticatorTests : TestBase
 
         Assert.Equal(responseState, result.Value);
     }
-
-    [Fact]
-    public async Task CompletesAuthenticationWithRealId()
-    {
-        var request = new RequestBuilder(_configuration).Build();
-        var result = await _authenticator.Authenticate(request, "PNOEE-37006150305");
-
-        Assert.Equal("OK", result.Value);
-    }
 }

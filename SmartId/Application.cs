@@ -16,7 +16,7 @@ public class Application(
             var verificationCode = requestBuilder.VerificationCode;
             
             Console.WriteLine($"Verification Code: {verificationCode}");
-            Console.WriteLine("Enter Estonian Id Code or Test Document number");
+            Console.WriteLine("Enter Estonian Id Code or Test Document Number");
             Console.WriteLine();
             var input = Console.ReadLine() ?? string.Empty;
             var result = await authenticator.Authenticate(request,
@@ -26,7 +26,7 @@ public class Application(
             Console.WriteLine();
             if (result is { ErrorMessage: not null, HasErrors: true } && result.ErrorMessage.Contains("404"))
             {
-                Console.WriteLine("Smart-Id Account Doesn't Exists For Entered Value.");
+                Console.WriteLine("Smart-Id Account Doesn't Exists for Entered Value.");
             }
             Console.WriteLine();
             Console.WriteLine(result.Value == "OK" ? "You Are Successfully Authenticated." : "Authentication Failed.");
