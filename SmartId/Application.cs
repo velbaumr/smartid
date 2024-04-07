@@ -15,8 +15,8 @@ public class Application(
             var request = requestBuilder.Build();
             var verificationCode = requestBuilder.VerificationCode;
             
-            Console.WriteLine($"Verification Code: {verificationCode}");
-            Console.WriteLine("Enter Estonian Id Code or Test Document Number");
+            Console.WriteLine($"Verification code: {verificationCode}");
+            Console.WriteLine("Enter Estonian ID code or test document number");
             Console.WriteLine();
             var input = Console.ReadLine() ?? string.Empty;
             var result = await authenticator.Authenticate(request,
@@ -26,12 +26,12 @@ public class Application(
             Console.WriteLine();
             if (result is { ErrorMessage: not null, HasErrors: true } && result.ErrorMessage.Contains("404"))
             {
-                Console.WriteLine("Smart-Id Account Doesn't Exists for Entered Value.");
+                Console.WriteLine("Smart-Id account doesn't exists for entered value.");
             }
             Console.WriteLine();
-            Console.WriteLine(result.Value == "OK" ? "You Are Successfully Authenticated." : "Authentication Failed.");
+            Console.WriteLine(result.Value == "OK" ? "You are successfully authenticated." : "Authentication failed.");
             Console.WriteLine();
-            Console.WriteLine("Do You Want to Continue? (y to Continue/Any Other Key to Quit)");
+            Console.WriteLine("Do you want to continue? (y to continue/any other key to quit)");
             var condition = Console.ReadKey()
                 .KeyChar;
 
