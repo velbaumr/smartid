@@ -14,7 +14,7 @@ public class SmartIdClientTests : TestBase
     public SmartIdClientTests()
     {
         var logger = new Mock<ILogger<SmartIdClient>>();
-        _client = new SmartIdClient(_configuration, logger.Object);
+        _client = new SmartIdClient(Configuration, logger.Object);
         _options = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
@@ -49,7 +49,7 @@ public class SmartIdClientTests : TestBase
 
     private async Task<HttpResponseMessage> GetSessionResponse(string documentNumber)
     {
-        var builder = new RequestBuilder(_configuration);
+        var builder = new RequestBuilder(Configuration);
         var request = builder.Build();
         var result = await _client.SendAuthenticationRequest(request, documentNumber);
         return result;

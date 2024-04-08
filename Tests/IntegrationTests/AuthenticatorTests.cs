@@ -11,7 +11,7 @@ public class AuthenticatorTests : TestBase
     public AuthenticatorTests()
     {
         var smartIdLogger = new Mock<ILogger<SmartIdClient>>();
-        var handler = new SmartIdClient(_configuration, smartIdLogger.Object);
+        var handler = new SmartIdClient(Configuration, smartIdLogger.Object);
         _authenticator = new Authenticator(handler);
     }
 
@@ -22,7 +22,7 @@ public class AuthenticatorTests : TestBase
     [InlineData("PNOEE-30403039928-MOCK-Q", "USER_REFUSED_DISPLAYTEXTANDPIN")]
     public async Task CompletesAuthentication(string documentNumber, string responseState)
     {
-        var request = new RequestBuilder(_configuration).Build();
+        var request = new RequestBuilder(Configuration).Build();
         var result = await _authenticator.Authenticate(request, documentNumber);
 
         Assert.Equal(responseState, result.Value);

@@ -4,7 +4,7 @@ namespace Tests.UnitTests;
 
 public class RequestBuilderTests : TestBase
 {
-    private readonly RequestBuilder _builder = new(_configuration);
+    private readonly RequestBuilder _builder = new(Configuration);
 
     [Fact]
     public void CreatesAuthenticationRequest()
