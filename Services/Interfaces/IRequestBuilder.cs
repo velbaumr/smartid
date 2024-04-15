@@ -4,7 +4,7 @@ namespace Services.Interfaces;
 
 public interface IRequestBuilder
 {
-    string? VerificationCode { get; set; }
+    string? VerificationCode { get; }
 
     AuthenticationRequest Build();
 }

@@ -7,7 +7,8 @@ namespace Services;
 public class RequestBuilder(
     IConfiguration configuration) : IRequestBuilder
 {
-    public string? VerificationCode { get; set; }
+    private string? _code;
+    public string VerificationCode => _code ?? throw new InvalidOperationException();
 
     public AuthenticationRequest Build()
     {
@@ -37,7 +38,7 @@ public class RequestBuilder(
             ]
         };
 
-        VerificationCode = CodeCalculator.CalculateCode(hash);
+        _code = CodeCalculator.CalculateCode(hash);
 
         return request;
     }
