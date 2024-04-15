@@ -8,7 +8,7 @@ public class RequestBuilder(
     IConfiguration configuration) : IRequestBuilder
 {
     private string? _code;
-    public string VerificationCode => _code ?? throw new InvalidOperationException();
+    public string VerificationCode => _code ?? throw new InvalidOperationException("Request not instantiated");
 
     public AuthenticationRequest Build()
     {
